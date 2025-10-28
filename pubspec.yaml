@@ -1,0 +1,63 @@
+name: movie
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Responsive Design
+  flutter_screenutil: ^5.9.3
+
+  # SVG library for rendering painting
+  flutter_svg: ^2.2.0
+
+  # Provides API to store data in secure storage.
+  flutter_secure_storage: ^9.2.4
+  
+  # State management
+  flutter_bloc: ^8.1.6
+
+  # Code generator
+  freezed: ^2.5.7
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+
+  # Networking
+  dio: ^5.9.0
+  pretty_dio_logger: ^1.4.0
+  retrofit: ^4.7.3
+  retrofit_generator: ^9.1.9
+
+  # Dependency Injection
+  get_it: ^8.2.0
+
+  # Shimmer for loading states
+  shimmer: ^3.0.0
+
+  # For caching network images
+  cached_network_image: ^3.4.1
+
+  # Google Fonts
+  google_fonts: ^6.3.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+  # Code generator
+  build_runner: ^2.4.15
+  json_serializable: ^6.9.5
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/svgs/
+    - assets/images/

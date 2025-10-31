@@ -1,9 +1,39 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/pagination/pagination_cubit.dart';
+import '../../../../core/pagination/pagination_state.dart';
+import '../../domain/entities/movie_entity.dart';
+import '../../domain/repositories/movie_repository.dart';
 
-import 'package:movie/core/networking/api_error_model.dart';
+class HomeCubit extends PaginationCubit<MovieEntity> {
+  final MovieRepository movieRepository;
 
-part 'home_state.dart';
+  HomeCubit(this.movieRepository);
 
-class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  @override
+  Future<void> fetchPage(int page) async {
+    final result = await movieRepository.getPopularMovies(page);
+
+    result.when(
+      success: (response) {
+        if (page == 1) {
+          items = response.movies;
+        } else {
+          items.addAll(response.movies);
+        }
+
+        currentPage = page;
+        totalPages = response.totalPages;
+
+        emit(
+          PaginationSuccess<MovieEntity>(
+            items: items,
+            currentPage: currentPage,
+            hasMorePages: currentPage < totalPages,
+          ),
+        );
+      },
+      failure: (error) {
+        emit(PaginationFailure<MovieEntity>(error));
+      },
+    );
+  }
 }

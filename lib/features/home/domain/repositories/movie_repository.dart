@@ -1,6 +1,6 @@
 import '../../../../core/networking/api_result.dart';
-import '../entities/movie_entity.dart';
+import '../entities/popular_movies_response.dart';
 
 abstract class MovieRepository {
-  Future<ApiResult<List<MovieEntity>>> getPopularMovies(int page);
+  Future<ApiResult<PopularMoviesResponse>> getPopularMovies(int page);
 }

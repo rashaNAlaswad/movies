@@ -2,21 +2,25 @@ import '../../../../core/constants/api_constants.dart';
 import '../../../../core/networking/api_error_handler.dart';
 import '../../../../core/networking/api_result.dart';
 import '../../../../core/networking/api_service.dart';
-import '../../domain/entities/movie_entity.dart';
+import '../../domain/entities/popular_movies_response.dart';
 import '../mappers/movie_mapper.dart';
 
 class MovieRemoteDataSource {
   final ApiService _apiService;
   MovieRemoteDataSource(this._apiService);
 
-  Future<ApiResult<List<MovieEntity>>> getPopularMovies(int page) async {
+  Future<ApiResult<PopularMoviesResponse>> getPopularMovies(int page) async {
     try {
       final response = await _apiService.getPopularMovies(
         ApiConstants.apiKey,
         page,
       );
       final movies = MovieMapper.toListDomain(response.results);
-      return ApiResult.success(movies);
+      final popularMoviesResponse = PopularMoviesResponse(
+        movies: movies,
+        totalPages: response.totalPages,
+      );
+      return ApiResult.success(popularMoviesResponse);
     } catch (error) {
       return ApiResult.failure(ApiErrorHandler.handle(error));
     }

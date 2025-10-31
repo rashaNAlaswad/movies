@@ -11,6 +11,7 @@ import '../../features/movie_details/domain/repositories/movie_details_repositor
 import '../../features/movie_details/presentation/cubit/movie_details_cubit.dart';
 import '../networking/api_service.dart';
 import '../networking/dio_factory.dart';
+import '../theme/theme_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -39,4 +40,5 @@ void setupGetIt() {
   getIt.registerFactory<MovieDetailsCubit>(
     () => MovieDetailsCubit(getIt<MovieDetailsRepository>()),
   );
+  getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
 }

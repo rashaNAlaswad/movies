@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/pagination/pagination_state.dart';
+import '../../../../core/widgets/theme_toggle_button.dart';
 import '../../domain/entities/movie_entity.dart';
 import '../cubit/home_cubit.dart';
 import '../widgets/home_error_widget.dart';
@@ -51,7 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Popular Movies'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Popular Movies'),
+        centerTitle: true,
+        actions: const [ThemeToggleButton()],
+      ),
       body: BlocBuilder<HomeCubit, PaginationState<MovieEntity>>(
         buildWhen: (previous, current) => current is! PaginationLoadingMore,
         builder: (context, state) {

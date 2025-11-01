@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'core/di/dependency_injection.dart';
 import 'core/helper/shared_preferences_helper.dart';
@@ -12,6 +13,7 @@ import 'core/theme/theme_state.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await CacheHelper.init();
   setupGetIt();
   runApp(const MainApp());

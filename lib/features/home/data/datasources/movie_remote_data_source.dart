@@ -1,9 +1,8 @@
-import '../../../../core/constants/api_constants.dart';
 import '../../../../core/networking/api_error_handler.dart';
 import '../../../../core/networking/api_error_model.dart';
 import '../../../../core/networking/api_result.dart';
 import '../../../../core/networking/api_service.dart';
-import '../../../../core/network/connectivity_service.dart';
+import '../../../../core/helper/connectivity_service.dart';
 import '../../domain/entities/popular_movies_response.dart';
 import '../datasources/movie_local_data_source.dart';
 import '../mappers/movie_mapper.dart';
@@ -28,10 +27,7 @@ class MovieRemoteDataSource {
     }
 
     try {
-      final response = await _apiService.getPopularMovies(
-        ApiConstants.apiKey,
-        page,
-      );
+      final response = await _apiService.getPopularMovies(page);
 
       // Cache the response model
       await _movieLocalDataSource.cachePopularMovies(response, page);

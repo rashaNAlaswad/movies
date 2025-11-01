@@ -1,4 +1,3 @@
-import '../../../../core/constants/api_constants.dart';
 import '../../../../core/networking/api_error_handler.dart';
 import '../../../../core/networking/api_result.dart';
 import '../../../../core/networking/api_service.dart';
@@ -11,10 +10,7 @@ class DetailsRemoteDataSource {
 
   Future<ApiResult<MovieDetailsEntity>> getMovieDetails(int movieId) async {
     try {
-      final response = await _apiService.getMovieDetails(
-        movieId,
-        ApiConstants.apiKey,
-      );
+      final response = await _apiService.getMovieDetails(movieId);
       final movieDetails = MovieDetailsMapper.toDomain(response);
       return ApiResult.success(movieDetails);
     } catch (error) {

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/core/networking/api_result.dart';
 import '../../../../core/networking/api_error_model.dart';
 import '../../domain/entities/movie_details_entity.dart';
 import '../../domain/repositories/movie_details_repository.dart';

@@ -1,3 +1,5 @@
+import 'package:movie/core/networking/api_result.dart';
+
 import '../../../../core/pagination/pagination_cubit.dart';
 import '../../../../core/pagination/pagination_state.dart';
 import '../../domain/entities/movie_entity.dart';

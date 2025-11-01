@@ -12,7 +12,7 @@ import '../../features/movie_details/data/repositories/movie_details_repository_
 import '../../features/movie_details/domain/repositories/movie_details_repository.dart';
 import '../../features/movie_details/presentation/cubit/movie_details_cubit.dart';
 import '../database/app_database.dart';
-import '../network/connectivity_service.dart';
+import '../helper/connectivity_service.dart';
 import '../networking/api_service.dart';
 import '../networking/dio_factory.dart';
 import '../theme/theme_cubit.dart';

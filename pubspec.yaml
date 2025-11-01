@@ -26,15 +26,15 @@ dependencies:
   flutter_bloc: ^8.1.6
 
   # Code generator
-  freezed: ^2.5.7
-  freezed_annotation: ^2.4.4
+  freezed: ^3.2.3
+  freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
 
   # Networking
   dio: ^5.9.0
   pretty_dio_logger: ^1.4.0
-  retrofit: ^4.7.3
-  retrofit_generator: ^9.1.9
+  retrofit: ^4.8.0
+  retrofit_generator: ^10.0.6
 
   # Dependency Injection
   get_it: ^8.2.0
@@ -48,6 +48,14 @@ dependencies:
   # Google Fonts
   google_fonts: ^6.3.1
 
+  # Local database for caching
+  drift: ^2.20.0
+  path_provider: ^2.1.4
+  path: ^1.9.1
+
+  # Connectivity checking
+  connectivity_plus: ^6.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -55,8 +63,9 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
   # Code generator
-  build_runner: ^2.4.15
-  json_serializable: ^6.9.5
+  build_runner: ^2.10.1
+  json_serializable: ^6.11.1
+  drift_dev: ^2.20.0
 
 flutter:
   uses-material-design: true

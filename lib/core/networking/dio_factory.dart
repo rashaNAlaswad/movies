@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import '../constants/api_constants.dart';
 
 class DioFactory {
   DioFactory._();
@@ -17,6 +18,7 @@ class DioFactory {
         ..options.receiveTimeout = timeOut;
       addDioHeaders();
       addDioInterceptor();
+      addApiKeyInterceptor();
       return dio!;
     } else {
       return dio!;
@@ -38,15 +40,16 @@ class DioFactory {
     );
   }
 
-  static void setAuthorizationHeader(String token) {
-    if (dio != null) {
-      dio?.options.headers = {'Authorization': 'Bearer $token'};
-    }
-  }
-
-  static void clearAuthorizationHeader() {
-    if (dio != null) {
-      dio?.options.headers.remove('Authorization');
-    }
+  static void addApiKeyInterceptor() {
+    dio?.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (ApiConstants.apiKey.isNotEmpty) {
+            options.queryParameters['api_key'] ??= ApiConstants.apiKey;
+          }
+          handler.next(options);
+        },
+      ),
+    );
   }
 }

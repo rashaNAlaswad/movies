@@ -1,6 +1,6 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConstants {
   ApiConstants._();
-  static const String statusCode = 'status_code';
-  static const String message = 'message';
-  static const String errors = 'errors';
+  static String get apiKey => dotenv.env['API_KEY'] ?? '';
 }

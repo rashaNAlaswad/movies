@@ -51,6 +51,8 @@ dependencies:
   # Environment variables
   flutter_dotenv: ^6.0.0
 
+  # Error tracking
+  sentry_flutter: ^9.7.0
 
 dev_dependencies:
   flutter_test:

@@ -12,12 +12,6 @@ dependencies:
 
   # Responsive Design
   flutter_screenutil: ^5.9.3
-
-  # SVG library for rendering painting
-  flutter_svg: ^2.2.0
-
-  # Provides API to store data in secure storage.
-  flutter_secure_storage: ^9.2.4
   
   # Shared preferences for local storage
   shared_preferences: ^2.3.3
@@ -45,9 +39,6 @@ dependencies:
   # For caching network images
   cached_network_image: ^3.4.1
 
-  # Google Fonts
-  google_fonts: ^6.3.1
-
   # Local database for caching
   drift: ^2.20.0
   sqlite3_flutter_libs: ^0.5.20
@@ -70,7 +61,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - assets/svgs/
-    - assets/images/

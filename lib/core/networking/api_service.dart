@@ -12,14 +12,8 @@ abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
   @GET(ApiUrls.popular)
-  Future<PopularMoviesResponseModel> getPopularMovies(
-    @Query('api_key') String apiKey,
-    @Query('page') int page,
-  );
+  Future<PopularMoviesResponseModel> getPopularMovies(@Query('page') int page);
 
   @GET(ApiUrls.movieDetails)
-  Future<MovieDetailsModel> getMovieDetails(
-    @Path('movie_id') int movieId,
-    @Query('api_key') String apiKey,
-  );
+  Future<MovieDetailsModel> getMovieDetails(@Path('movie_id') int movieId);
 }

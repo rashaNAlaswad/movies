@@ -22,15 +22,9 @@ class _ApiService implements ApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PopularMoviesResponseModel> getPopularMovies(
-    String apiKey,
-    int page,
-  ) async {
+  Future<PopularMoviesResponseModel> getPopularMovies(int page) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'api_key': apiKey,
-      r'page': page,
-    };
+    final queryParameters = <String, dynamic>{r'page': page};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PopularMoviesResponseModel>(
@@ -55,9 +49,9 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<MovieDetailsModel> getMovieDetails(int movieId, String apiKey) async {
+  Future<MovieDetailsModel> getMovieDetails(int movieId) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'api_key': apiKey};
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<MovieDetailsModel>(

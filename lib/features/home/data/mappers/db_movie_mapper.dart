@@ -26,13 +26,14 @@ class DbMovieMapper {
     return dbMovies.map(toModel).toList();
   }
 
-  static MoviesCompanion toCompanion(MovieModel movie) {
+  static MoviesCompanion toCompanion(MovieModel movie, int page) {
     return MoviesCompanion(
       id: Value(movie.id),
       title: Value(movie.title),
       posterPath: Value(movie.posterPath),
       voteAverage: Value(movie.voteAverage),
       releaseDate: Value(movie.releaseDate),
+      page: Value(page),
     );
   }
 }

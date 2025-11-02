@@ -27,7 +27,15 @@ class MovieRepositoryImpl implements MovieRepository {
       success: (response) => response,
     );
 
-    // If cache has data, return it; otherwise return API error
-    return cachedResponse != null ? cacheResult : apiResult;
+    if (cachedResponse != null) {
+      final modifiedResponse = PopularMoviesResponse(
+        movies: cachedResponse.movies,
+        totalPages: page + 99,
+      );
+      return ApiResult.success(modifiedResponse);
+    }
+
+    // No cache available, return API error
+    return apiResult;
   }
 }

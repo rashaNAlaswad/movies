@@ -16,16 +16,10 @@ class MovieLocalDataSource {
     int page,
   ) async {
     try {
-      if (!_isFirstPage(page)) {
-        return ApiResult.failure(
-          ApiErrorModel(message: 'Only first page is cached'),
-        );
-      }
-
-      final movies = await _getCachedMovies();
+      final movies = await _getCachedMovies(page);
       if (movies.isEmpty) {
         return ApiResult.failure(
-          ApiErrorModel(message: 'No cached movies available'),
+          ApiErrorModel(message: 'No cached movies available for page $page'),
         );
       }
 
@@ -33,7 +27,7 @@ class MovieLocalDataSource {
       final movieEntities = MovieMapper.toListDomain(movieModels);
 
       return ApiResult.success(
-        domain.PopularMoviesResponse(movies: movieEntities, totalPages: 1),
+        domain.PopularMoviesResponse(movies: movieEntities, totalPages: page),
       );
     } catch (error) {
       return ApiResult.failure(
@@ -47,36 +41,34 @@ class MovieLocalDataSource {
     int page,
   ) async {
     try {
-      if (!_isFirstPage(page)) {
-        return;
-      }
-
       await _database.transaction(() async {
-        await _clearAllMovies();
-        await _saveMovies(response.results);
+        await _clearMoviesForPage(page);
+        await _saveMovies(response.results, page);
       });
     } catch (error) {
       _handleCacheError(error);
     }
   }
 
-  Future<List<Movy>> _getCachedMovies() async {
-    return await (_database.select(_database.movies)).get();
+  Future<List<Movy>> _getCachedMovies(int page) async {
+    final query = _database.select(_database.movies)
+      ..where((tbl) => tbl.page.equals(page));
+    return await query.get();
   }
 
-  Future<void> _clearAllMovies() async {
-    await _database.delete(_database.movies).go();
+  Future<void> _clearMoviesForPage(int page) async {
+    await (_database.delete(
+      _database.movies,
+    )..where((tbl) => tbl.page.equals(page))).go();
   }
 
-  Future<void> _saveMovies(List<MovieModel> movies) async {
+  Future<void> _saveMovies(List<MovieModel> movies, int page) async {
     for (final movie in movies) {
       await _database
           .into(_database.movies)
-          .insertOnConflictUpdate(DbMovieMapper.toCompanion(movie));
+          .insertOnConflictUpdate(DbMovieMapper.toCompanion(movie, page));
     }
   }
-
-  bool _isFirstPage(int page) => page == 1;
 
   void _handleCacheError(dynamic error) {
     print('Error caching data: $error');

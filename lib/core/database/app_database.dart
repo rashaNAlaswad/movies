@@ -12,6 +12,7 @@ class Movies extends Table {
   TextColumn get posterPath => text().nullable()();
   RealColumn get voteAverage => real()();
   TextColumn get releaseDate => text()();
+  IntColumn get page => integer().withDefault(const Constant(1))();
 
   @override
   Set<Column> get primaryKey => {id};

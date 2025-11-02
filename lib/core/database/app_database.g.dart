@@ -59,6 +59,16 @@ class $MoviesTable extends Movies with TableInfo<$MoviesTable, Movy> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _pageMeta = const VerificationMeta('page');
+  @override
+  late final GeneratedColumn<int> page = GeneratedColumn<int>(
+    'page',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -66,6 +76,7 @@ class $MoviesTable extends Movies with TableInfo<$MoviesTable, Movy> {
     posterPath,
     voteAverage,
     releaseDate,
+    page,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -118,6 +129,12 @@ class $MoviesTable extends Movies with TableInfo<$MoviesTable, Movy> {
     } else if (isInserting) {
       context.missing(_releaseDateMeta);
     }
+    if (data.containsKey('page')) {
+      context.handle(
+        _pageMeta,
+        page.isAcceptableOrUnknown(data['page']!, _pageMeta),
+      );
+    }
     return context;
   }
 
@@ -147,6 +164,10 @@ class $MoviesTable extends Movies with TableInfo<$MoviesTable, Movy> {
         DriftSqlType.string,
         data['${effectivePrefix}release_date'],
       )!,
+      page: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}page'],
+      )!,
     );
   }
 
@@ -162,12 +183,14 @@ class Movy extends DataClass implements Insertable<Movy> {
   final String? posterPath;
   final double voteAverage;
   final String releaseDate;
+  final int page;
   const Movy({
     required this.id,
     required this.title,
     this.posterPath,
     required this.voteAverage,
     required this.releaseDate,
+    required this.page,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -179,6 +202,7 @@ class Movy extends DataClass implements Insertable<Movy> {
     }
     map['vote_average'] = Variable<double>(voteAverage);
     map['release_date'] = Variable<String>(releaseDate);
+    map['page'] = Variable<int>(page);
     return map;
   }
 
@@ -191,6 +215,7 @@ class Movy extends DataClass implements Insertable<Movy> {
           : Value(posterPath),
       voteAverage: Value(voteAverage),
       releaseDate: Value(releaseDate),
+      page: Value(page),
     );
   }
 
@@ -205,6 +230,7 @@ class Movy extends DataClass implements Insertable<Movy> {
       posterPath: serializer.fromJson<String?>(json['posterPath']),
       voteAverage: serializer.fromJson<double>(json['voteAverage']),
       releaseDate: serializer.fromJson<String>(json['releaseDate']),
+      page: serializer.fromJson<int>(json['page']),
     );
   }
   @override
@@ -216,6 +242,7 @@ class Movy extends DataClass implements Insertable<Movy> {
       'posterPath': serializer.toJson<String?>(posterPath),
       'voteAverage': serializer.toJson<double>(voteAverage),
       'releaseDate': serializer.toJson<String>(releaseDate),
+      'page': serializer.toJson<int>(page),
     };
   }
 
@@ -225,12 +252,14 @@ class Movy extends DataClass implements Insertable<Movy> {
     Value<String?> posterPath = const Value.absent(),
     double? voteAverage,
     String? releaseDate,
+    int? page,
   }) => Movy(
     id: id ?? this.id,
     title: title ?? this.title,
     posterPath: posterPath.present ? posterPath.value : this.posterPath,
     voteAverage: voteAverage ?? this.voteAverage,
     releaseDate: releaseDate ?? this.releaseDate,
+    page: page ?? this.page,
   );
   Movy copyWithCompanion(MoviesCompanion data) {
     return Movy(
@@ -245,6 +274,7 @@ class Movy extends DataClass implements Insertable<Movy> {
       releaseDate: data.releaseDate.present
           ? data.releaseDate.value
           : this.releaseDate,
+      page: data.page.present ? data.page.value : this.page,
     );
   }
 
@@ -255,14 +285,15 @@ class Movy extends DataClass implements Insertable<Movy> {
           ..write('title: $title, ')
           ..write('posterPath: $posterPath, ')
           ..write('voteAverage: $voteAverage, ')
-          ..write('releaseDate: $releaseDate')
+          ..write('releaseDate: $releaseDate, ')
+          ..write('page: $page')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, title, posterPath, voteAverage, releaseDate);
+      Object.hash(id, title, posterPath, voteAverage, releaseDate, page);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -271,7 +302,8 @@ class Movy extends DataClass implements Insertable<Movy> {
           other.title == this.title &&
           other.posterPath == this.posterPath &&
           other.voteAverage == this.voteAverage &&
-          other.releaseDate == this.releaseDate);
+          other.releaseDate == this.releaseDate &&
+          other.page == this.page);
 }
 
 class MoviesCompanion extends UpdateCompanion<Movy> {
@@ -280,12 +312,14 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
   final Value<String?> posterPath;
   final Value<double> voteAverage;
   final Value<String> releaseDate;
+  final Value<int> page;
   const MoviesCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.posterPath = const Value.absent(),
     this.voteAverage = const Value.absent(),
     this.releaseDate = const Value.absent(),
+    this.page = const Value.absent(),
   });
   MoviesCompanion.insert({
     this.id = const Value.absent(),
@@ -293,6 +327,7 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
     this.posterPath = const Value.absent(),
     required double voteAverage,
     required String releaseDate,
+    this.page = const Value.absent(),
   }) : title = Value(title),
        voteAverage = Value(voteAverage),
        releaseDate = Value(releaseDate);
@@ -302,6 +337,7 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
     Expression<String>? posterPath,
     Expression<double>? voteAverage,
     Expression<String>? releaseDate,
+    Expression<int>? page,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -309,6 +345,7 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
       if (posterPath != null) 'poster_path': posterPath,
       if (voteAverage != null) 'vote_average': voteAverage,
       if (releaseDate != null) 'release_date': releaseDate,
+      if (page != null) 'page': page,
     });
   }
 
@@ -318,6 +355,7 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
     Value<String?>? posterPath,
     Value<double>? voteAverage,
     Value<String>? releaseDate,
+    Value<int>? page,
   }) {
     return MoviesCompanion(
       id: id ?? this.id,
@@ -325,6 +363,7 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
       posterPath: posterPath ?? this.posterPath,
       voteAverage: voteAverage ?? this.voteAverage,
       releaseDate: releaseDate ?? this.releaseDate,
+      page: page ?? this.page,
     );
   }
 
@@ -346,6 +385,9 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
     if (releaseDate.present) {
       map['release_date'] = Variable<String>(releaseDate.value);
     }
+    if (page.present) {
+      map['page'] = Variable<int>(page.value);
+    }
     return map;
   }
 
@@ -356,7 +398,8 @@ class MoviesCompanion extends UpdateCompanion<Movy> {
           ..write('title: $title, ')
           ..write('posterPath: $posterPath, ')
           ..write('voteAverage: $voteAverage, ')
-          ..write('releaseDate: $releaseDate')
+          ..write('releaseDate: $releaseDate, ')
+          ..write('page: $page')
           ..write(')'))
         .toString();
   }
@@ -380,6 +423,7 @@ typedef $$MoviesTableCreateCompanionBuilder =
       Value<String?> posterPath,
       required double voteAverage,
       required String releaseDate,
+      Value<int> page,
     });
 typedef $$MoviesTableUpdateCompanionBuilder =
     MoviesCompanion Function({
@@ -388,6 +432,7 @@ typedef $$MoviesTableUpdateCompanionBuilder =
       Value<String?> posterPath,
       Value<double> voteAverage,
       Value<String> releaseDate,
+      Value<int> page,
     });
 
 class $$MoviesTableFilterComposer
@@ -421,6 +466,11 @@ class $$MoviesTableFilterComposer
 
   ColumnFilters<String> get releaseDate => $composableBuilder(
     column: $table.releaseDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get page => $composableBuilder(
+    column: $table.page,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -458,6 +508,11 @@ class $$MoviesTableOrderingComposer
     column: $table.releaseDate,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get page => $composableBuilder(
+    column: $table.page,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$MoviesTableAnnotationComposer
@@ -489,6 +544,9 @@ class $$MoviesTableAnnotationComposer
     column: $table.releaseDate,
     builder: (column) => column,
   );
+
+  GeneratedColumn<int> get page =>
+      $composableBuilder(column: $table.page, builder: (column) => column);
 }
 
 class $$MoviesTableTableManager
@@ -524,12 +582,14 @@ class $$MoviesTableTableManager
                 Value<String?> posterPath = const Value.absent(),
                 Value<double> voteAverage = const Value.absent(),
                 Value<String> releaseDate = const Value.absent(),
+                Value<int> page = const Value.absent(),
               }) => MoviesCompanion(
                 id: id,
                 title: title,
                 posterPath: posterPath,
                 voteAverage: voteAverage,
                 releaseDate: releaseDate,
+                page: page,
               ),
           createCompanionCallback:
               ({
@@ -538,12 +598,14 @@ class $$MoviesTableTableManager
                 Value<String?> posterPath = const Value.absent(),
                 required double voteAverage,
                 required String releaseDate,
+                Value<int> page = const Value.absent(),
               }) => MoviesCompanion.insert(
                 id: id,
                 title: title,
                 posterPath: posterPath,
                 voteAverage: voteAverage,
                 releaseDate: releaseDate,
+                page: page,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

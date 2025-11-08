@@ -15,11 +15,18 @@ A modern Flutter application for browsing popular movies with detailed informati
 - **🔄 Connectivity Detection**: Automatic detection of network connectivity
 - **⚡ Smooth Performance**: Optimized with shimmer loading states and image caching
 
+
 ### Layers
 
 - **Data Layer**: Handles API calls, local caching, and data models
 - **Domain Layer**: Contains business logic and entities
 - **Presentation Layer**: UI components and state management (BLoC)
+
+
+## 🎥 Video
+
+https://github.com/user-attachments/assets/88172ddc-0508-4ba8-9914-9349267a1c6a
+
 
 ## 🛠️ Tech Stack
 
